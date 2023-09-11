@@ -8,27 +8,41 @@ app.use(express.json())
 
 //Get all locations
 app.get("/api/v1/locations", async(req, res) => {
+    try {
+        const results = await db.query("SELECT * FROM locations")
+        console.log(results);
+        res.status(200).json({
+            status: "success",
+            results: results.rows.length,
+            data: {
+                resturants: results.rows,
+            },
+        });
+    } catch (error) {
+        console.log(error);
+    }
 
-    const results = await db.query("SELECT * FROM locations")
-    console.log(results);
-    res.status(200).json({
-        status: "success",
-        data: {
-            resturant: ["mcd", "wed"],
-        },
-    });
 });
 
 //Get a location
-app.get("/api/v1/locations/:id", (req, res) => {
-    console.log(req.params);
+app.get("/api/v1/locations/:id", async (req, res) => {
+    console.log(req.params.id);
 
-    res.status(200).json({
-        status: "success",
-        data: {
-            resturant: "mcdonalds"
-        }
-    })
+    try {
+        const results = await db.query("select * from locations where id = $1", [req.params.id]);
+        console.log(results)
+
+        res.status(200).json({
+            status: "success",
+            data: {
+                resturant: results.rows[0],
+            }
+        })
+
+    } catch (error) {
+        console.log(error)
+    }
+
 });
 
 //Create a location
