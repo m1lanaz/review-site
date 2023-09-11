@@ -1,13 +1,16 @@
 require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
+const db  = require("./db");
 const app = express();
 
 app.use(express.json())
 
 //Get all locations
-app.get("/api/v1/locations", (req, res) => {
-    console.log("route handler ran");
+app.get("/api/v1/locations", async(req, res) => {
+
+    const results = await db.query("SELECT * FROM locations")
+    console.log(results);
     res.status(200).json({
         status: "success",
         data: {
