@@ -46,36 +46,53 @@ app.get("/api/v1/locations/:id", async (req, res) => {
 });
 
 //Create a location
-app.post("/api/v1/locations", (req, res) => {
+app.post("/api/v1/locations", async (req, res) => {
     console.log(req.body);
 
-    res.status(201).json({
-        status: "success",
-        data: {
-            resturant: "mcdonalds"
-        }
-    })
+    try {
+        const results = await db.query("INSERT INTO locations (name, location, price_range) values ($1, $2, $3) returning *", [req.body.name, req.body.location, req.body.price_range]) 
+        console.log(results);
+        res.status(201).json({
+            status: "success",
+            data: {
+                resturant: results.rows[0],
+            }
+        })
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 // Update location
 
-app.put("/api/v1/locations/:id", (req, res) => {
+app.put("/api/v1/locations/:id", async (req, res) => {
     console.log(req.body);
-    console.log(req.params.id);
 
-    res.status(200).json({
-        status: "success",
-        data: {
-            resturant: "mcdonalds"
-        }
-    })
+    try {
+        const results = await db.query("UPDATE locations SET name = $1, location = $2, price_range = $3 where id = $4 returning *", [req.body.name, req.body.location, req.body.price_range, req.params.id])
+        res.status(200).json({
+            status: "success",
+            data: {
+                resturant: results,
+            }
+        })
+    } catch (error) {
+        console.log(error);
+    }
 })
 
 // Delete location
-app.delete("/api/v1/locations/:id", (req, res) => {
-    res.status(204).json({
-        status: "success"
-    });
+app.delete("/api/v1/locations/:id", async (req, res) => {
+
+    try {
+        const results = await db.query("DELETE FROM locations where id = $1", [req.params.id])
+
+        res.status(204).json({
+            status: "success"
+        });
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 
