@@ -8,9 +8,9 @@ const App = () => {
 return (
     <BrowserRouter>
       <Routes>
-        <Route path="/resturants/:id/update" element={<ResturantDetailsPage />}/>
+        <Route path="/resturant/:id/update" element={<UpdatePage />}/>
         <Route index element={<Home />} />
-        <Route path="/resturant/:id" element={<UpdatePage />} />
+        <Route path="/resturant/:id" element={<ResturantDetailsPage />} />
       </Routes>
     </BrowserRouter>
 )
