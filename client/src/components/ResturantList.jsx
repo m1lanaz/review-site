@@ -3,14 +3,19 @@ import ResturantFinder from "../apis/ResturantFinder";
 
 const ResturantList = () => {
 
-    useEffect(async ()=> {
-        try {
-            const response = await ResturantFinder.get("/");
-            console.log(response);
-        } catch (error) {
-            
-        }
-    }, [])
+    useEffect(() => {
+
+        const fetchData = async () => {
+            try {
+                const response = await ResturantFinder.get("/");
+                console.log(response);
+            } catch (error) {
+                
+            }
+        };
+
+        fetchData();
+    }, []);
 
     return(
         <div className="d-flex flex-wrap justify-content-center">
