@@ -1,4 +1,17 @@
+import { useEffect } from "react";
+import ResturantFinder from "../apis/ResturantFinder";
+
 const ResturantList = () => {
+
+    useEffect(async ()=> {
+        try {
+            const response = await ResturantFinder.get("/");
+            console.log(response);
+        } catch (error) {
+            
+        }
+    }, [])
+
     return(
         <div className="d-flex flex-wrap justify-content-center">
             <div className="d-flex flex-column align-items-center">

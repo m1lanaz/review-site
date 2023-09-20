@@ -10,7 +10,6 @@ app.use(express.json())
 app.get("/api/v1/locations", async(req, res) => {
     try {
         const results = await db.query("SELECT * FROM locations")
-        console.log(results);
         res.status(200).json({
             status: "success",
             results: results.rows.length,
